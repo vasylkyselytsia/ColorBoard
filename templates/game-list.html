@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% block styles %}
+    {{ block.super }}
+    <style>
+        .circle {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            background-color: #007bff;
+            position: fixed;
+            bottom: 40px;
+            right: calc(100% / 12);
+            outline: none !important;
+            text-decoration: none !important;
+        }
+
+        .circle:hover {
+            text-decoration: none !important;
+        }
+
+        .circle::before {
+            content: "+";
+            height: 100px;
+            width: 100px;
+            font-size: 100px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-family: courier;
+            color: white;
+        }
+
+        a.card-title {
+            font-size: 1.35rem;
+            color: black;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-10 m-auto mb-0 mt-lg-5 mt-md-5">
+        {% with games_list|partition:"3" as game_list_parted %}
+            {% for game_row in game_list_parted %}
+                <div class="card-group">
+                    {% for game in game_row %}
+                        <div class="card">
+                            <div class="card-body">
+                                <a class="card-title" href="{% url "color-board-view" game.id %}">Game {{ game.id }}</a>
+                                <p class="card-text"><b>Number of Players: </b> {{ game.players_count }}</p>
+                                <p class="card-text"><b>Sequence of characters on the board: </b> {{ game.board }}</p>
+                                <p class="card-text"><b>Cards in the deck: </b> {{ game.cards }}</p>
+                                <p class="card-text"><b>Winner: </b> {{ game.winner|default:"-" }}</p>
+                                <p class="card-text"><b>Moves: </b> {{ game.last_move }}</p>
+                                <p class="card-text">
+                                    <small class="text-muted">Created {{ game.created_at|date:"Y-m-d H:i" }}</small>
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        {% endwith %}
+    </div>
+    <a class="circle" href="{% url 'color-board-create' %}"></a>
+
+{% endblock %}

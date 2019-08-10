@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content col-md-6 m-auto mb-0 mt-lg-5 mt-md-5">
+        <form
+                action="{% url 'color-board-create' %}"
+                method="post"
+        >
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary col-6 m-auto d-block">Solve</button>
+
+        </form>
+
+        {% if result %}
+            {{ result|safe }}
+        {% endif %}
+
+    </div>
+{% endblock %}
